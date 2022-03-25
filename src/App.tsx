@@ -11,7 +11,7 @@ import {
   Section,
   Header,
   Main,
-} from "./components";
+} from "./StyledComponents";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
