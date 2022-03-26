@@ -15,10 +15,23 @@ import {
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [cart, setCart] = useState<Product[]>([]);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
 
   useEffect(() => {
     api.list().then(setProducts);
   }, []);
+
+  useEffect(() => {
+    const total = cart.reduce((acc, product) => {
+      return acc + product.price;
+    }, 0);
+    setTotalPrice(total);
+  }, [cart]);
+
+  const handleAddProduct = (product: Product) => {
+    setCart([...cart, product]);
+  };
 
   return (
     <Main>
@@ -31,12 +44,19 @@ function App() {
               <p>{product.title}</p>
               <p>{product.description}</p>
             </div>
-            <Button>Agregar</Button>
+            <Button onClick={() => handleAddProduct(product)}>Agregar</Button>
+            <div>
+              <Button onClick={() => {}}>-</Button>
+              {}
+              <Button onClick={() => {}}>+</Button>
+            </div>
           </Article>
         ))}
       </Section>
       <Aside>
-        <Button>3 productos (total: $12)</Button>
+        <Button>
+          {cart.length} productos (total: ${totalPrice})
+        </Button>
       </Aside>
       <Footer>
         Encontrá la consigna de este ejercicio y otros más{" "}
