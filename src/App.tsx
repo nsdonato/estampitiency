@@ -4,34 +4,24 @@ import { Product } from "./types";
 
 import {
   Aside,
-  Button,
-  Img,
+  Image,
   Article,
-  Footer,
+  PrimaryButton,
+  StyledFooter,
   Section,
   Header,
   Main,
 } from "./StyledComponents";
 
+import { useCart } from "./useCart";
+
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [cart, setCart] = useState<Product[]>([]);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const { addProduct, totalPrice, size } = useCart();
 
   useEffect(() => {
     api.list().then(setProducts);
   }, []);
-
-  useEffect(() => {
-    const total = cart.reduce((acc, product) => {
-      return acc + product.price;
-    }, 0);
-    setTotalPrice(total);
-  }, [cart]);
-
-  const handleAddProduct = (product: Product) => {
-    setCart([...cart, product]);
-  };
 
   return (
     <Main>
@@ -39,31 +29,33 @@ function App() {
       <Section>
         {products.map((product) => (
           <Article key={product.id}>
-            <Img src={product.image} />
+            <Image src={product.image} />
             <div>
               <p>{product.title}</p>
               <p>{product.description}</p>
             </div>
-            <Button onClick={() => handleAddProduct(product)}>Agregar</Button>
-            <div>
-              <Button onClick={() => {}}>-</Button>
+            <PrimaryButton onClick={() => addProduct(product)}>
+              Agregar
+            </PrimaryButton>
+            {/* <div>
+              <PrimaryButton onClick={() => {}}>-</PrimaryButton>
               {}
-              <Button onClick={() => {}}>+</Button>
-            </div>
+              <PrimaryButton onClick={() => {}}>+</PrimaryButton>
+            </div> */}
           </Article>
         ))}
       </Section>
       <Aside>
-        <Button>
-          {cart.length} productos (total: ${totalPrice})
-        </Button>
+        <PrimaryButton>
+          {size} productos (total: ${totalPrice})
+        </PrimaryButton>
       </Aside>
-      <Footer>
+      <StyledFooter>
         Encontrá la consigna de este ejercicio y otros más{" "}
         <a href="https://github.com/goncy/interview-challenges/tree/main/simple-cart">
           acá
         </a>
-      </Footer>
+      </StyledFooter>
     </Main>
   );
 }

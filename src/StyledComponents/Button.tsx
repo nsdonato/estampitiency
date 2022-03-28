@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { Button as Btn } from "../components/Button";
 
-export const Button = styled.button`
+export const PrimaryButton = styled(Btn)`
   color: white;
   background-color: dodgerblue;
   border: none;
